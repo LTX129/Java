@@ -1,0 +1,75 @@
+@startuml
+class LCDDisplay {
++ void showMessage(String)
++ void clearDisplay()
+}
+class DoorLock {
+- Keypad keypad
+- boolean isLocked
++ <<Create>> DoorLock(Keypad)
++ void activate()
++ void deactivate()
++ void handleInput(String)
++ void openDoor()
+}
+class SecureApartment {
+- LCDDisplay lcdDisplay
+- DoorLock doorLock
+- ICCardReader icCardReader
+- Keypad keyPad
+- VideoCallSystem videoCallSystem
++ <<Create>> SecureApartment()
++ void activateSystem()
++ void deactivateSystem()
+}
+interface SecurityDevice {
+~ void activate()
+~ void deactivate()
+~ void handleInput(String)
+}
+class VideoCallSystem {
+- Display display
+- DoorLock door
+- boolean inCall
+- {static} int TIMEOUT_PERIOD
++ <<Create>> VideoCallSystem(Display,DoorLock)
++ void initiateCall(String)
++ void hangUp()
++ void openDoor()
++ void activate()
++ void deactivate()
++ void handleInput(String)
+}
+class Keypad {
+- Display display
+- String enteredNumber
+- int failedAttempts
+- {static} int MAX_ATTEMPTS
+- DoorLock doorLock
++ <<Create>> Keypad(DoorLock)
++ void handleInput(String)
++ void activate()
++ void deactivate()
++ void enterNumber(String)
+- boolean isPinValid(String)
+}
+interface Display {
+~ void showMessage(String)
+~ void clearDisplay()
+}
+class ICCardReader {
+- DoorLock doorLock
++ <<Create>> ICCardReader(DoorLock)
++ void activate()
++ void deactivate()
++ void handleInput(String)
++ void readCard(String)
+}
+
+
+Display <|.. LCDDisplay
+SecurityDevice <|.. DoorLock
+SecurityDevice <|.. VideoCallSystem
+SecurityDevice <|.. Keypad
+SecurityDevice <|.. ICCardReader
+@enduml
